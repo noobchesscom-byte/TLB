@@ -1,0 +1,4 @@
+module(
+input [4:0] reg1,
+input reg2,
+input 

@@ -1,0 +1,168 @@
+$date
+	Fri May  8 11:22:03 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module execute_stage_tb $end
+$var wire 32 ! alu_result [31:0] $end
+$var reg 3 " alucontrol [2:0] $end
+$var reg 1 # clk $end
+$var reg 32 $ instruction [31:0] $end
+$var reg 1 % reg_write $end
+$var reg 32 & write_data [31:0] $end
+$var reg 5 ' write_reg [4:0] $end
+$scope module dut $end
+$var wire 3 ( alucontrol [2:0] $end
+$var wire 1 # clk $end
+$var wire 32 ) instruction [31:0] $end
+$var wire 1 % reg_write $end
+$var wire 32 * write_data [31:0] $end
+$var wire 5 + write_reg [4:0] $end
+$var wire 5 , shamt [4:0] $end
+$var wire 5 - rt [4:0] $end
+$var wire 5 . rs [4:0] $end
+$var wire 32 / read_data2 [31:0] $end
+$var wire 32 0 read_data1 [31:0] $end
+$var wire 5 1 rd [4:0] $end
+$var wire 6 2 opcode [5:0] $end
+$var wire 16 3 imm [15:0] $end
+$var wire 6 4 func [5:0] $end
+$var wire 32 5 alu_result [31:0] $end
+$var wire 26 6 addr [25:0] $end
+$scope module alu_hard $end
+$var wire 3 7 alucontrol [2:0] $end
+$var wire 32 8 b [31:0] $end
+$var wire 32 9 a [31:0] $end
+$var reg 32 : result [31:0] $end
+$upscope $end
+$scope module decode_hard $end
+$var wire 32 ; instruction [31:0] $end
+$var wire 5 < shamt [4:0] $end
+$var wire 5 = rt [4:0] $end
+$var wire 5 > rs [4:0] $end
+$var wire 5 ? rd [4:0] $end
+$var wire 6 @ opcode [5:0] $end
+$var wire 16 A imm [15:0] $end
+$var wire 6 B func [5:0] $end
+$var wire 26 C addr [25:0] $end
+$upscope $end
+$scope module register_hard $end
+$var wire 1 # clk $end
+$var wire 32 D read_data1 [31:0] $end
+$var wire 32 E read_data2 [31:0] $end
+$var wire 5 F read_reg1 [4:0] $end
+$var wire 5 G read_reg2 [4:0] $end
+$var wire 1 % reg_write $end
+$var wire 32 H write_data [31:0] $end
+$var wire 5 I write_reg [4:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b1000 I
+b1010 H
+bx G
+bx F
+bx E
+bx D
+bx C
+bx B
+bx A
+bx @
+bx ?
+bx >
+bx =
+bx <
+bx ;
+bx :
+bx 9
+bx 8
+bx 7
+bx 6
+bx 5
+bx 4
+bx 3
+bx 2
+bx 1
+bx 0
+bx /
+bx .
+bx -
+bx ,
+b1000 +
+b1010 *
+bx )
+bx (
+b1000 '
+b1010 &
+1%
+bx $
+0#
+bx "
+bx !
+$end
+#5
+1#
+#10
+0#
+b101 &
+b101 *
+b101 H
+b1001 '
+b1001 +
+b1001 I
+#15
+1#
+#20
+b1111 !
+b1111 5
+b1111 :
+b0 2
+b0 @
+b1010 0
+b1010 9
+b1010 D
+b1000 .
+b1000 >
+b1000 F
+b101 /
+b101 8
+b101 E
+b1001 -
+b1001 =
+b1001 G
+b1010 1
+b1010 ?
+b0 ,
+b0 <
+b100000 4
+b100000 B
+b101000000100000 3
+b101000000100000 A
+b1000010010101000000100000 6
+b1000010010101000000100000 C
+0#
+b0 "
+b0 (
+b0 7
+b1000010010101000000100000 $
+b1000010010101000000100000 )
+b1000010010101000000100000 ;
+0%
+#25
+1#
+#30
+0#
+#35
+1#
+#40
+0#
