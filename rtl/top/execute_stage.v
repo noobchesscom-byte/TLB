@@ -5,6 +5,7 @@ output [31:0] alu_result
 );
 wire [2:0] alucontrol;
 wire reg_write;
+wire mem_write;
 wire [4:0] rs;
 wire [4:0] rt;
 wire [4:0] rd;
@@ -17,7 +18,7 @@ wire [15:0] imm;
 wire [4:0] shamt;
 
 wire [25:0] addr;
-
+wire [31:0] mem_read_data;
 wire [31:0] read_data1;
 wire [31:0] read_data2;
 wire [31:0] alu_write_result;
@@ -36,6 +37,7 @@ control_unit control_hard(
 .opcode(opcode),
 .funct(func),
 .reg_write(reg_write),
+.mem_write(mem_write),
 .alucontrol(alucontrol)
 );
 register register_hard(
@@ -57,6 +59,16 @@ alu alu_hard(
 .b(read_data2),
 .alucontrol(alucontrol),
 .result(alu_write_result)
+);
+dmem dmem_hard(.clk(clk),
+
+.mem_write(mem_write),
+
+.address(alu_write_result),
+
+.write_data(read_data2),
+
+.read_data(mem_read_data)
 );
 assign alu_result = alu_write_result;
 endmodule

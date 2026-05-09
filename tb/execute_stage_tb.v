@@ -23,14 +23,14 @@ clk = 0;
 
 instruction = 32'd0;
 
-dut.register_hard.registers[8] = 32'd10;
-dut.register_hard.registers[9] = 32'd5;
+dut.register_hard.registers[8] = 32'd4;
+dut.register_hard.registers[9] = 32'd100;
 
 #10;
 
-instruction = 32'h01095020;
+instruction = 32'hAD090000;
 
-#20;
+#40;
 
 $finish;
 
