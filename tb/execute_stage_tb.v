@@ -25,10 +25,10 @@ instruction = 32'd0;
 
 dut.register_hard.registers[8] = 32'd4;
 dut.register_hard.registers[9] = 32'd100;
-
+dut.dmem_hard.memory[26] = 32'd100;
 #10;
 
-instruction = 32'hAD090000;
+instruction = 32'h8D090000;
 
 #40;
 
