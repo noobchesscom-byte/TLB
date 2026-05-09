@@ -1,5 +1,7 @@
 module if_stage(input clk,
 input reset,
+input branch_taken,
+input [31:0] branch_target,
 output [31:0] instruction,
 output [31:0] pc);
 wire [31:0] pc_curr;
@@ -13,6 +15,7 @@ imem imem_hard(
     .address(pc_curr),
     .instruction(instruction)
 );
-assign pc_next = pc_curr + 4;
+assign pc_next =
+(branch_taken) ? branch_target : (pc_curr + 4);
 assign pc = pc_curr;
 endmodule
