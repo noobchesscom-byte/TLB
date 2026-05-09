@@ -2,7 +2,9 @@ module cpu(
 input clk,
 input reset
 );
+wire jump;
 
+wire [31:0] jump_target;
 wire [31:0] instruction;
 wire [31:0] pc;
 wire branch_taken;
@@ -14,7 +16,9 @@ if_stage if_hard(.clk(clk),
 .branch_taken(branch_taken),
 .branch_target(branch_target),
 .instruction(instruction),
-.pc(pc)
+.pc(pc),
+.jump(jump),
+.jump_target(jump_target)
 );
 
 execute_stage execute_hard(.clk(clk),
@@ -22,7 +26,9 @@ execute_stage execute_hard(.clk(clk),
 .pc_curr(pc),
 .branch_taken(branch_taken),
 .branch_target(branch_target),
-.alu_result(alu_result)
+.alu_result(alu_result),
+.jump(jump),
+.jump_target(jump_target)
 );
 
 endmodule

@@ -7,6 +7,7 @@ output reg mem_to_reg,
 output reg reg_dst,
 output reg mem_write,
 output reg reg_write,
+output reg jump,
 output reg [2:0] alucontrol
 );
 
@@ -15,6 +16,7 @@ always @(*) begin
 	mem_to_reg = 0;
         reg_write = 0;
         mem_write = 0;
+	jump=0;
 	alu_src = 0;
         alucontrol = 3'b000;
 	branch = 0;
@@ -83,6 +85,11 @@ end
         branch = 1;
 
         alucontrol = 3'b001;
+
+end
+6'b000010: begin
+
+        jump = 1;
 
 end
 

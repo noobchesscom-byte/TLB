@@ -1,5 +1,7 @@
 module if_stage(input clk,
 input reset,
+input jump,
+input [31:0] jump_target,
 input branch_taken,
 input [31:0] branch_target,
 output [31:0] instruction,
@@ -16,6 +18,8 @@ imem imem_hard(
     .instruction(instruction)
 );
 assign pc_next =
-(branch_taken) ? branch_target : (pc_curr + 4);
-assign pc = pc_curr;
+(jump === 1'b1) ? jump_target :
+(branch_taken === 1'b1) ? branch_target :
+(pc_curr + 4);
+assign pc=pc_curr;
 endmodule

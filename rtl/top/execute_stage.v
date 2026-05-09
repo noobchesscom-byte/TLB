@@ -4,7 +4,9 @@ input [31:0] pc_curr,
 input [31:0] instruction,
 output branch_taken,
 output [31:0] branch_target,
-output [31:0] alu_result
+output [31:0] alu_result,
+output jump,
+output [31:0] jump_target
 );
 wire [2:0] alucontrol;
 wire reg_write;
@@ -22,6 +24,7 @@ wire branch;
 wire [31:0] branch_offset;
 wire [15:0] imm;
 
+wire [31:0] pc_plus_4;
 wire [4:0] shamt;
 wire [31:0] writeback_data;
 wire [25:0] addr;
@@ -52,6 +55,7 @@ control_unit control_hard(
 .mem_write(mem_write),
 .mem_to_reg(mem_to_reg),
 .branch(branch),
+.jump(jump),
 .alucontrol(alucontrol)
 );
 register register_hard(
@@ -101,4 +105,9 @@ assign branch_taken =
 assign branch_offset = imm_ext << 2;
 assign branch_target =
 pc_curr + 4 + branch_offset;
+assign pc_plus_4 = pc_curr + 4;
+assign jump_target =
+(jump === 1'b1) ?
+{pc_plus_4[31:28], addr, 2'b00} :
+32'b0;
 endmodule
