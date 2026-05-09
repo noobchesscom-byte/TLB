@@ -1,0 +1,59 @@
+module control_unit(
+input [5:0] opcode,
+input [5:0] funct,
+
+output reg reg_write,
+output reg [2:0] alucontrol
+);
+
+always @(*) begin
+
+        reg_write = 0;
+        alucontrol = 3'b000;
+
+        case(opcode)
+
+6'b000000: begin
+
+        reg_write = 1;
+
+                case(funct)
+
+        6'h20:
+alucontrol = 3'b000;
+
+                6'h22:
+        alucontrol = 3'b001;
+
+        6'h24:
+                alucontrol = 3'b010;
+
+6'h25:
+        alucontrol = 3'b011;
+
+6'h26:
+                alucontrol = 3'b100;
+
+        6'h2A:
+alucontrol = 3'b101;
+
+                default:
+        alucontrol = 3'b000;
+
+        endcase
+
+end
+
+                default: begin
+
+        reg_write = 0;
+alucontrol = 3'b000;
+
+                end
+
+        endcase
+
+end
+
+endmodule
+	

@@ -1,13 +1,10 @@
 module execute_stage(
 input clk,
-input reg_write,
 input [31:0] instruction,
-input [2:0] alucontrol,
-input [4:0] write_reg,
-input [31:0] write_data,
 output [31:0] alu_result
 );
-
+wire [2:0] alucontrol;
+wire reg_write;
 wire [4:0] rs;
 wire [4:0] rt;
 wire [4:0] rd;
@@ -23,7 +20,7 @@ wire [25:0] addr;
 
 wire [31:0] read_data1;
 wire [31:0] read_data2;
-
+wire [31:0] alu_write_result;
 decode decode_hard(
 .instruction(instruction),
 .rs(rs),
@@ -35,7 +32,12 @@ decode decode_hard(
 .shamt(shamt),
 .addr(addr)
 );
-
+control_unit control_hard(
+.opcode(opcode),
+.funct(func),
+.reg_write(reg_write),
+.alucontrol(alucontrol)
+);
 register register_hard(
 .clk(clk),
 .reg_write(reg_write),
@@ -43,8 +45,8 @@ register register_hard(
 .read_reg1(rs),
 .read_reg2(rt),
 
-.write_reg(write_reg),
-.write_data(write_data),
+.write_reg(rd),
+.write_data(alu_write_result),
 
 .read_data1(read_data1),
 .read_data2(read_data2)
@@ -54,7 +56,7 @@ alu alu_hard(
 .a(read_data1),
 .b(read_data2),
 .alucontrol(alucontrol),
-.result(alu_result)
+.result(alu_write_result)
 );
-
+assign alu_result = alu_write_result;
 endmodule
