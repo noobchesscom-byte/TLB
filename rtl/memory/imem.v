@@ -23,7 +23,7 @@ instruction = 32'h200A0001;
 instruction = 32'h200B0009;
 
 default:
-instruction = 32'h00000000;
+instruction = 32'h20000000;
 
         endcase
 
