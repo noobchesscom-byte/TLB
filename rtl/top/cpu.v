@@ -1,6 +1,15 @@
-module cpu(
+module cpu#(
+    parameter TLB_POLICY  = 0,
+    parameter TLB_ENTRIES = 8,
+    parameter TLB_PENALTY = 5,
+    parameter ITLB_ENABLE = 1,
+    parameter DTLB_ENABLE = 1
+)(
 input clk,
-input reset
+input reset,
+output [31:0] itlb_hits,
+
+output [31:0] itlb_misses
 );
 
 wire jump;
@@ -14,6 +23,12 @@ wire [31:0] alu_src_a;
 wire [31:0] alu_src_b;
 wire [31:0] id_instruction;
 wire [31:0] id_pc;
+wire        itlb_stall;
+wire        dtlb_stall;
+wire        stall_request;
+wire [31:0] dtlb_physical_address;
+wire        dtlb_hit, dtlb_miss;
+wire [31:0] dtlb_hits, dtlb_misses;
 
 wire [31:0] ex_instruction;
 wire [31:0] ex_pc;
@@ -92,12 +107,20 @@ wire mem_to_reg_mem;
 
 wire [4:0] write_reg_mem;
 wire stall;
-if_stage if_hard(
+assign stall_request = itlb_stall | dtlb_stall;
+if_stage #(
+    .TLB_POLICY  (TLB_POLICY),
+    .TLB_ENTRIES (TLB_ENTRIES),
+    .TLB_PENALTY (TLB_PENALTY),
+    .TLB_ENABLE  (ITLB_ENABLE)
+) if_hard(
 .clk(clk),
 .reset(reset),
+.itlb_hits(itlb_hits),
 
+.itlb_misses(itlb_misses),
 .branch_taken(branch_taken),
-
+.stall_request(itlb_stall),
 .jump(jump_ex),
 
 .jump_target(jump_target),
@@ -113,7 +136,7 @@ if_id if_id_hard(
 
 .clk(clk),
 .reset(reset),
-.stall(stall),
+.stall(stall || stall_request),
 .instruction_in(if_instruction),
 .pc_in(if_pc),
 .flush(flush),
@@ -244,10 +267,10 @@ id_ex id_ex_hard(
 
 .clk(clk),
 .reset(reset),
-.stall(stall),
+.stall(stall || stall_request),
 .instruction_in(id_instruction),
 .pc_in(id_pc),
-
+.flush(flush),
 .read_data1_in(read_data1_id),
 .read_data2_in(read_data2_id),
 
@@ -360,13 +383,31 @@ rt_ex
 
 );
 
+tlb #(
+    .ENTRIES (TLB_ENTRIES),
+    .PENALTY (TLB_PENALTY),
+    .ENABLE  (DTLB_ENABLE),
+    .POLICY  (TLB_POLICY)
+) dtlb (
+    .clk              (clk),
+    .reset            (reset),
+    .access_valid     (mem_write_mem | mem_to_reg_mem),
+    .virtual_address  (alu_result_mem),
+    .physical_address (dtlb_physical_address),
+    .hit              (dtlb_hit),
+    .miss             (dtlb_miss),
+    .stall_request    (dtlb_stall),
+    .hit_count_out    (dtlb_hits),
+    .miss_count_out   (dtlb_misses)
+);
+
 dmem dmem_hard(
 
 .clk(clk),
 
 .mem_write(mem_write_mem),
 
-.address(alu_result_mem),
+.address(dtlb_physical_address),
 
 .write_data(write_data_mem),
 

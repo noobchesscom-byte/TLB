@@ -12,7 +12,7 @@ input [4:0] rt_in,
 input [4:0] rd_in,
 input [31:0] instruction_in,
  input [31:0] pc_in,
-
+input flush,
 input [31:0] read_data1_in,
  input [31:0] read_data2_in,
 
@@ -79,8 +79,35 @@ always @(posedge clk or posedge reset) begin
         end
 
         else begin
+		if(flush) begin
 
-                if(stall == 1'b1) begin
+                reg_write_out <= 0;
+                mem_write_out <= 0;
+                mem_to_reg_out <= 0;
+                reg_dst_out <= 0;
+
+                alucontrol_out <= 3'b000;
+
+                alu_src_out <= 0;
+                branch_out <= 0;
+                jump_out <= 0;
+
+                rs_out <= 0;
+                rt_out <= 0;
+                rd_out <= 0;
+
+                instruction_out <= 32'b0;
+
+                pc_out <= 32'b0;
+
+                read_data1_out <= 32'b0;
+                read_data2_out <= 32'b0;
+
+                imm_ext_out <= 32'b0;
+
+        end
+
+             else if(stall == 1'b1) begin
 
                         reg_write_out <= 0;
                         mem_write_out <= 0;
